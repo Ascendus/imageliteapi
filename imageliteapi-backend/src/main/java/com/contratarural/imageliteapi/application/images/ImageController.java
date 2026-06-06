@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("v1/images")
 @Slf4j
-public class ImagesController {
+public class ImageController {
 
     @PostMapping
     public ResponseEntity save(
