@@ -61,7 +61,7 @@ public class ImageController {
             @RequestParam(value = "extension", required = false, defaultValue = "") String extension,
             @RequestParam(value = "query", required = false) String query) {
 
-        var result = imageService.search(ImageExtension.valueOf(extension), query);
+        var result = imageService.search(ImageExtension.ofName(extension), query);
 
         var images = result.stream().map(image -> {
             var url = buildImageURL(image);
@@ -75,7 +75,7 @@ public class ImageController {
     private URI buildImageURL(Image image) {
         String imagePath = "/" + image.getId();
         return ServletUriComponentsBuilder
-                .fromCurrentRequest()
+                .fromCurrentRequestUri()
                 .path(imagePath)
                 .build()
                 .toUri();
