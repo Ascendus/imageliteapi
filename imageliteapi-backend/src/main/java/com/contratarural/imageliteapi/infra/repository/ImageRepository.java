@@ -2,6 +2,7 @@ package com.contratarural.imageliteapi.infra.repository;
 
 import com.contratarural.imageliteapi.domain.entity.Image;
 import com.contratarural.imageliteapi.domain.enums.ImageExtension;
+import com.contratarural.imageliteapi.infra.repository.specs.ImageSpecs;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -17,15 +18,11 @@ public interface ImageRepository extends JpaRepository<Image, String>, JpaSpecif
         Specification<Image> spec = Specification.unrestricted();
 
         if (extension != null) {
-            Specification<Image> extensionEqual = (root, q, cb) -> cb.equal(root.get("extension"), extension);
-            spec = spec.and(extensionEqual);
+            spec = spec.and(ImageSpecs.extensionEqual(extension));
         }
 
         if (StringUtils.hasText(query)) {
-            Specification<Image> nameLike = (root, q, cb) -> cb.like(cb.upper(root.get("name")), "%" + query.toUpperCase() + "%");
-            Specification<Image> tagsLike = (root, q, cb) -> cb.like(cb.upper(root.get("tags")), "%" + query.toUpperCase() + "%");
-            Specification<Image> nameOrTagsLike = Specification.anyOf(nameLike, tagsLike);
-            spec = spec.and(nameOrTagsLike);
+            spec = spec.and(Specification.anyOf(ImageSpecs.nameLike(query), ImageSpecs.tagsLike(query)));
         }
 
         return findAll(spec);
