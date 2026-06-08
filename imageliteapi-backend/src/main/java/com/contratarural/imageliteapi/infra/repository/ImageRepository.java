@@ -2,6 +2,7 @@ package com.contratarural.imageliteapi.infra.repository;
 
 import com.contratarural.imageliteapi.domain.entity.Image;
 import com.contratarural.imageliteapi.domain.enums.ImageExtension;
+import com.contratarural.imageliteapi.infra.repository.specs.GenericSpecs;
 import com.contratarural.imageliteapi.infra.repository.specs.ImageSpecs;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface ImageRepository extends JpaRepository<Image, String>, JpaSpecificationExecutor<Image> {
 
     default List<Image> findByExtensionAndNameOrTagsLike(ImageExtension extension, String query) {
-        Specification<Image> spec = Specification.unrestricted();
+        Specification<Image> spec = GenericSpecs.conjunction();
 
         if (extension != null) {
             spec = spec.and(ImageSpecs.extensionEqual(extension));
