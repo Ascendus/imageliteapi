@@ -4,10 +4,7 @@ export default function GaleriaPage() {
     return (
         <Template>
             <section className='grid grid-cols-3 gap-8' >
-                <ImageCard />
-                <ImageCard />
-                <ImageCard />
-                <ImageCard />
+                <ImageCard nome='' tamanho='' dataUpload='' src='' />
             </section>
         </Template>
     )
