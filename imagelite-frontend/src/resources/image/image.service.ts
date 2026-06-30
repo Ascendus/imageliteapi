@@ -6,6 +6,7 @@ class ImageService {
     async buscar(query: string = "", extension: string = "") : Promise<Image[]> {
         const url = `${this.baseURL}?query=${query}&extension=${extension}`
         const response = await fetch(url);
+        if (!response.ok) return [];
         return await response.json();
     }
 
